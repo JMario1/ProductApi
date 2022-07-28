@@ -17,16 +17,16 @@ namespace productMgtApi.Services
             _categoryRepository = categoryRepository;
         }
 
-        public async Task<Response<Product>> CreateAsync(Product product)
+        public async Task<Response<Product>> CreateAsync(Product product, CancellationToken cancellationToken)
         {
-            Category existingCategory = await _categoryRepository.FindByIdAsync(product.CategoryId);
+            Category existingCategory = await _categoryRepository.FindByIdAsync(product.CategoryId, cancellationToken);
             if (existingCategory == null)
             {
                 return new Response<Product>(false, "Invalid Category", null);
             }
             try
             {
-                await _productRepository.AddAsync(product);
+                await _productRepository.AddAsync(product, cancellationToken);
                 await _unitOfWork.CompleteAsync();
                 return new Response<Product>(true, "success", product);
             }
@@ -38,16 +38,16 @@ namespace productMgtApi.Services
 
         }
 
-        public async Task<Response<Product>> DeleteAsync(int id)
+        public async Task<Response<Product>> DeleteAsync(int id, CancellationToken cancellationToken)
         {
-            Product existingProduct = await _productRepository.FindAsync(id);
+            Product existingProduct = await _productRepository.FindAsync(id, cancellationToken);
             if (existingProduct == null)
             {
                 return new Response<Product>(false, "Product does not exists", null);
             }
             try
             {
-                _productRepository.Remove(id);
+                _productRepository.Remove(id, cancellationToken);
                 await _unitOfWork.CompleteAsync();
                 return new Response<Product>(true, "Deleted successfully", null);
             }
@@ -58,16 +58,16 @@ namespace productMgtApi.Services
             }
         }
 
-        public async Task<Response<Product>> DisableProductAsync(int id)
+        public async Task<Response<Product>> DisableProductAsync(int id, CancellationToken cancellationToken)
         {
-            Product existingProduct = await _productRepository.FindAsync(id);
+            Product existingProduct = await _productRepository.FindAsync(id, cancellationToken);
             if (existingProduct == null)
             {
                 return new Response<Product>(false, "Product does not exists", null);
             }
             try
             {
-                await _productRepository.DisableAsync(id);
+                await _productRepository.DisableAsync(id, cancellationToken);
                 await _unitOfWork.CompleteAsync();
                 return new Response<Product>(true, "success", null);
             }
@@ -78,16 +78,16 @@ namespace productMgtApi.Services
             }
         }
 
-        public async Task<Response<Product>> EnableProductAsync(int id)
+        public async Task<Response<Product>> EnableProductAsync(int id, CancellationToken cancellationToken)
         {
-            Product existingProduct = await _productRepository.FindAsync(id);
+            Product existingProduct = await _productRepository.FindAsync(id, cancellationToken);
             if (existingProduct == null)
             {
                 return new Response<Product>(false, "Product does not exists", null);
             }
             try
             {
-                await _productRepository.EnableAsync(id);
+                await _productRepository.EnableAsync(id, cancellationToken);
                 await _unitOfWork.CompleteAsync();
                 return new Response<Product>(true, "success", null);
             }
@@ -98,17 +98,17 @@ namespace productMgtApi.Services
             }
         }
 
-        public async Task<Response<List<Product>>> GetAllAsync()
+        public async Task<Response<List<Product>>> GetAllAsync(CancellationToken cancellationToken)
         {
-            List<Product> products = await _productRepository.FindAllsync();
+            List<Product> products = await _productRepository.FindAllsync(cancellationToken);
 
             return new Response<List<Product>>(true, "success", products);
 
         }
 
-        public async Task<Response<Product>> GetAsync(int id)
+        public async Task<Response<Product>> GetAsync(int id, CancellationToken cancellationToken)
         {
-            Product product = await _productRepository.FindAsync(id);
+            Product product = await _productRepository.FindAsync(id, cancellationToken);
             if (product == null)
             {
                 return new Response<Product>(false, "Product does not exists", null);
@@ -117,23 +117,23 @@ namespace productMgtApi.Services
             return new Response<Product>(true, "success", product);
         }
 
-        public async Task<Response<List<Product>>> GetDisabledAsync()
+        public async Task<Response<List<Product>>> GetDisabledAsync(CancellationToken cancellationToken)
         {
-            List<Product> disabledProducts = await _productRepository.FindDisabledAsync();
+            List<Product> disabledProducts = await _productRepository.FindDisabledAsync(cancellationToken);
 
             return new Response<List<Product>>(true, "success", disabledProducts);
         }
 
-        public async Task<Response<int>> SumOfPrices()
+        public async Task<Response<int>> SumOfPrices(CancellationToken cancellationToken)
         {
-            int sum  = await _productRepository.SumOfPricesAsync();
+            int sum  = await _productRepository.SumOfPricesAsync(cancellationToken);
 
             return new Response<int>(true, "success", sum);
         }
 
-        public async Task<Response<Product>> UpdateAsync(Product product)
+        public async Task<Response<Product>> UpdateAsync(Product product, CancellationToken cancellationToken)
         {
-            Product existingProduct = await _productRepository.FindAsync(product.Id);
+            Product existingProduct = await _productRepository.FindAsync(product.Id, cancellationToken);
             if (existingProduct == null)
             {
                 return new Response<Product>(false, "Product does not exists", null);
@@ -145,7 +145,7 @@ namespace productMgtApi.Services
                 existingProduct.CategoryId = product.CategoryId;
                 existingProduct.Price = product.Price;
 
-                _productRepository.Update(existingProduct);
+                _productRepository.Update(existingProduct, cancellationToken);
                 await _unitOfWork.CompleteAsync();
                 return new Response<Product>(true, "success", existingProduct);
             }

@@ -22,9 +22,9 @@ namespace productMgtApi.Controllers
 
         [HttpGet("{id}")]
         [Authorize(Roles = "SuperAdmin, Admin, User")]
-        public async Task<IActionResult> Get(int id)
+        public async Task<IActionResult> Get(int id, CancellationToken cancellationToken)
         {
-            Response<Product> result = await _productService.GetAsync(id);
+            Response<Product> result = await _productService.GetAsync(id, cancellationToken);
             if (!result.Success)
             {
                 return NotFound(result.Message);
@@ -34,9 +34,9 @@ namespace productMgtApi.Controllers
 
         [HttpGet]
         [Authorize(Roles = "SuperAdmin, Admin, User")]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll(CancellationToken cancellationToken)
         {
-            Response<List<Product>> result = await _productService.GetAllAsync();
+            Response<List<Product>> result = await _productService.GetAllAsync(cancellationToken);
             if (!result.Success)
             {
                 return NotFound(result.Message);
@@ -47,10 +47,10 @@ namespace productMgtApi.Controllers
         [HttpPost]
         [ProducesResponseType(typeof(Product), 200)]
         [Authorize(Roles = "SuperAdmin, Admin")]
-        public async Task<IActionResult> CreateAsync([FromBody] CreateProductRequest request)
+        public async Task<IActionResult> CreateAsync([FromBody] CreateProductRequest request, CancellationToken cancellationToken)
         {
             Product product = _mapper.Map<CreateProductRequest, Product>(request);
-            Response<Product> result = await _productService.CreateAsync(product);
+            Response<Product> result = await _productService.CreateAsync(product, cancellationToken);
             if (!result.Success)
             {
                 return BadRequest(result.Message);
@@ -61,10 +61,10 @@ namespace productMgtApi.Controllers
         [HttpPut]
         [ProducesResponseType(typeof(Product), 200)]
         [Authorize(Roles = "SuperAdmin, Admin")]
-        public async Task<IActionResult> UpdateAsync([FromBody] UpdateProductRequest request)
+        public async Task<IActionResult> UpdateAsync([FromBody] UpdateProductRequest request, CancellationToken cancellationToken)
         {
             Product product = _mapper.Map<UpdateProductRequest, Product>(request);
-            Response<Product> result = await _productService.UpdateAsync(product);
+            Response<Product> result = await _productService.UpdateAsync(product, cancellationToken);
             if (!result.Success)
             {
                 return BadRequest(result.Message);
@@ -74,9 +74,9 @@ namespace productMgtApi.Controllers
 
         [HttpDelete("{id}")]
         [Authorize(Roles = "SuperAdmin, Admin")]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(int id, CancellationToken cancellationToken)
         {
-            Response<Product> result = await _productService.DeleteAsync(id);
+            Response<Product> result = await _productService.DeleteAsync(id, cancellationToken);
             if (!result.Success)
             {
                 return NotFound(result.Message);
@@ -86,9 +86,9 @@ namespace productMgtApi.Controllers
 
         [HttpGet("disabled")]
         [Authorize(Roles = "SuperAdmin, Admin")]
-        public async Task<IActionResult> GetDisabled()
+        public async Task<IActionResult> GetDisabled(CancellationToken cancellationToken)
         {
-            Response<List<Product>> result = await _productService.GetDisabledAsync();
+            Response<List<Product>> result = await _productService.GetDisabledAsync(cancellationToken);
             if (!result.Success)
             {
                 return NotFound(result.Message);
@@ -98,9 +98,9 @@ namespace productMgtApi.Controllers
 
         [HttpGet("sum")]
         [Authorize(Roles = "SuperAdmin, Admin")]
-        public async Task<IActionResult> Sum()
+        public async Task<IActionResult> Sum(CancellationToken cancellationToken)
         {
-            Response<int> result = await _productService.SumOfPrices();
+            Response<int> result = await _productService.SumOfPrices(cancellationToken);
             if (!result.Success)
             {
                 return NotFound(result.Message);
@@ -110,9 +110,9 @@ namespace productMgtApi.Controllers
 
         [HttpPut("disable/{id}")]
         [Authorize(Roles = "SuperAdmin")]
-        public async Task<IActionResult> Disable(int id)
+        public async Task<IActionResult> Disable(int id, CancellationToken cancellationToken)
         {
-            Response<Product> result = await _productService.DisableProductAsync(id);
+            Response<Product> result = await _productService.DisableProductAsync(id, cancellationToken);
             if (!result.Success)
             {
                 return BadRequest(result.Message);
@@ -122,9 +122,9 @@ namespace productMgtApi.Controllers
 
         [HttpPut("enable/{id}")]
         [Authorize(Roles = "SuperAdmin")]
-        public async Task<IActionResult> Enable(int id)
+        public async Task<IActionResult> Enable(int id, CancellationToken cancellationToken)
         {
-            Response<Product> result = await _productService.EnableProductAsync(id);
+            Response<Product> result = await _productService.EnableProductAsync(id, cancellationToken);
             if (!result.Success)
             {
                 return BadRequest(result.Message);

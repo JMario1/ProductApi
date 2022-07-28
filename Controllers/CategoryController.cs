@@ -22,9 +22,9 @@ namespace productMgtApi.Controllers
 
         [HttpGet("{id}")]
         [Authorize(Roles = "SuperAdmin, Admin, User")]
-        public async Task<IActionResult> GetAsync(int id)
+        public async Task<IActionResult> GetAsync(int id, CancellationToken cancellationToken)
         {
-            Response<Category> result = await _categoryService.GetAsync(id);
+            Response<Category> result = await _categoryService.GetAsync(id, cancellationToken);
             if (!result.Success)
             {
                 return BadRequest(result.Message);
@@ -34,9 +34,9 @@ namespace productMgtApi.Controllers
 
         [HttpGet]
         [Authorize(Roles = "SuperAdmin, Admin, User")]
-        public async Task<IActionResult> GetAllAsync()
+        public async Task<IActionResult> GetAllAsync(CancellationToken cancellationToken)
         {
-            Response<List<Category>> result = await _categoryService.GetAllAsync();
+            Response<List<Category>> result = await _categoryService.GetAllAsync(cancellationToken);
             if (!result.Success)
             {
                 return NotFound(result.Message);
@@ -47,10 +47,10 @@ namespace productMgtApi.Controllers
         [HttpPost]
         [ProducesResponseType(typeof(Category), 200)]
         [Authorize(Roles = "SuperAdmin, Admin")]
-        public async Task<IActionResult> CreateAsync([FromBody] CreateCategoryRequest request)
+        public async Task<IActionResult> CreateAsync([FromBody] CreateCategoryRequest request, CancellationToken cancellationToken)
         {
             Category category = _mapper.Map<CreateCategoryRequest, Category>(request);
-            Response<Category> result = await _categoryService.CreateAsync(category);
+            Response<Category> result = await _categoryService.CreateAsync(category, cancellationToken);
             if (!result.Success)
             {
                 return BadRequest(result.Message);

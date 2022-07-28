@@ -12,20 +12,20 @@ namespace productMgtApi.Persistence
         {
             _appDbContext = appDbContext;
         }
-        public async Task AddAsync(Category category)
+        public async Task AddAsync(Category category, CancellationToken cancellationToken)
         {
-            await _appDbContext.Categories.AddAsync(category);
+            await _appDbContext.Categories.AddAsync(category, cancellationToken);
         }
 
-        public  async Task<List<Category>> FindAllAsync()
+        public  async Task<List<Category>> FindAllAsync(CancellationToken cancellationToken)
         {
-            List<Category> categories =  await _appDbContext.Categories.ToListAsync();
+            List<Category> categories =  await _appDbContext.Categories.ToListAsync(cancellationToken);
             return  categories;
         }
 
-        public async Task<Category> FindByIdAsync(int id)
+        public async Task<Category> FindByIdAsync(int id, CancellationToken cancellationToken)
         {
-            return await _appDbContext.Categories.FindAsync(id);
+            return await _appDbContext.Categories.FindAsync(id, cancellationToken);
         }
 
         public async Task<Category> FindByNameAsync(string name)
