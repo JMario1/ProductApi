@@ -24,12 +24,12 @@ namespace productMgtApi.Controllers
         public async Task<IActionResult> LoginAsync([FromBody] LoginRequest request)
         {
             
-            Response<AccessToken> result = await _authService.CreateAccessTokenAsync(request.Email, request.Password);
+            Response<AccessToken> result = await _authService.CreateAccessTokenAsync(request.Email!, request.Password!);
             if (!result.Success)
             {
                 return BadRequest(result.Message);
             }
-            TokenResponse res = _mapper.Map<AccessToken, TokenResponse>(result.Data);
+            TokenResponse res = _mapper.Map<AccessToken, TokenResponse>(result.Data!);
             return Ok(res);
         }
 
@@ -38,13 +38,13 @@ namespace productMgtApi.Controllers
         public async Task<IActionResult> RefreshAsync([FromBody] TokenRequest request)
         {
             
-            Response<AccessToken> result = await _authService.RefreshTokenAsync(request.Token, request.Email);
+            Response<AccessToken> result = await _authService.RefreshTokenAsync(request.Token!, request.Email!);
             if (!result.Success)
             {
                 return BadRequest(result.Message);
             }
 
-            return Ok(_mapper.Map<AccessToken, TokenResponse>(result.Data));
+            return Ok(_mapper.Map<AccessToken, TokenResponse>(result.Data!));
         }
 
         // [Route("/api/token/refresh")]
@@ -53,7 +53,7 @@ namespace productMgtApi.Controllers
         public IActionResult Logout([FromBody] RevokeTokenRequest token)
         {
             
-            _authService.RevokeRefreshToken(token.RefreshToken);
+            _authService.RevokeRefreshToken(token.RefreshToken!);
 
             return NoContent();
         }

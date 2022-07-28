@@ -25,7 +25,8 @@ namespace productMgtApi.Persistence
 
         public async Task<Category> FindByIdAsync(int id, CancellationToken cancellationToken)
         {
-            return await _appDbContext.Categories.FindAsync(id, cancellationToken);
+            var result = await _appDbContext.Categories.FindAsync(id, cancellationToken);
+            return result!;
         }
 
         public async Task<Category> FindByNameAsync(string name)

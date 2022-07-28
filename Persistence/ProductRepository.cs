@@ -43,7 +43,10 @@ namespace productMgtApi.Persistence
 
         public async Task<Product> FindAsync(int id, CancellationToken cancellationToken)
         {
-            return await _appDbContext.Products.Include(prod => prod.Category).Where(prod => prod.Id == id).FirstOrDefaultAsync(cancellationToken);
+            var result = await _appDbContext.Products.Include(prod => prod.Category)
+                .Where(prod => prod.Id == id)
+                .FirstOrDefaultAsync(cancellationToken);
+            return result!;
         }
 
         public async Task<List<Product>> FindDisabledAsync(CancellationToken cancellationToken)

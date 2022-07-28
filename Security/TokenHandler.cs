@@ -37,12 +37,12 @@ namespace productMgtApi.Security
 
         public RefreshToken TakeRefreshToken(string token)
         {
-            if (string.IsNullOrWhiteSpace(token)) return null;
+            if (string.IsNullOrWhiteSpace(token)) return null!;
             RefreshToken? refreshToken = _refreshTokens.SingleOrDefault(t => t.Token == token);
             if (refreshToken != null)
                 _refreshTokens.Remove(refreshToken);
 
-            return refreshToken;
+            return refreshToken!;
         }
 
         private async Task<AccessToken> BuildAccessTokenAsync(AppUser user, RefreshToken refreshToken)

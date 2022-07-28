@@ -34,7 +34,7 @@ namespace productMgtApi.Controllers
             {
                 return BadRequest(result.Message);
             }
-            return Ok(result.Data.Email);
+            return Ok(result.Data!.Email);
         }
 
         [HttpPost("register-admin")]
@@ -52,7 +52,7 @@ namespace productMgtApi.Controllers
             {
                 return BadRequest(result.Message);
             }
-            return Ok(result.Data.Email);
+            return Ok(result.Data!.Email);
         }
     }
 }

@@ -17,6 +17,8 @@ namespace productMgtApi.Services
 
         public async Task<Response<Category>> CreateAsync(Category category, CancellationToken cancellationToken)
         {
+            if (category.Name == null) return new Response<Category>(false, "Category name is required", null);
+            
             Category existingCategory = await _categoryRepository.FindByNameAsync(category.Name);
             if (existingCategory == null)
             {
