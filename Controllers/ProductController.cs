@@ -73,7 +73,7 @@ namespace productMgtApi.Controllers
         }
 
         [HttpDelete("{id}")]
-        [Authorize(Roles = "SuperAdmin, Admin")]
+        [Authorize(Roles = "SuperAdmin")]
         public async Task<IActionResult> Delete(int id, CancellationToken cancellationToken)
         {
             Response<Product> result = await _productService.DeleteAsync(id, cancellationToken);
@@ -85,7 +85,7 @@ namespace productMgtApi.Controllers
         }
 
         [HttpGet("disabled")]
-        [Authorize(Roles = "SuperAdmin, Admin")]
+        [Authorize(Roles = "SuperAdmin")]
         public async Task<IActionResult> GetDisabled(CancellationToken cancellationToken)
         {
             Response<List<Product>> result = await _productService.GetDisabledAsync(cancellationToken);
@@ -109,7 +109,7 @@ namespace productMgtApi.Controllers
         }
 
         [HttpPut("disable/{id}")]
-        [Authorize(Roles = "SuperAdmin")]
+        [Authorize(Roles = "SuperAdmin, Admin")]
         public async Task<IActionResult> Disable(int id, CancellationToken cancellationToken)
         {
             Response<Product> result = await _productService.DisableProductAsync(id, cancellationToken);
@@ -121,7 +121,7 @@ namespace productMgtApi.Controllers
         }
 
         [HttpPut("enable/{id}")]
-        [Authorize(Roles = "SuperAdmin")]
+        [Authorize(Roles = "SuperAdmin, Admin")]
         public async Task<IActionResult> Enable(int id, CancellationToken cancellationToken)
         {
             Response<Product> result = await _productService.EnableProductAsync(id, cancellationToken);
